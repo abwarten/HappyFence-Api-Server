@@ -4,16 +4,14 @@ from .serializers import (
     CreateUserSerializer,
     UserSerializer,
     LoginUserSerializer,
+    ContactSerializer
 )
+from .models import Contact
 from knox.models import AuthToken
-
 class RegistrationAPI(generics.GenericAPIView):
     serializer_class = CreateUserSerializer
-
+    
     def post(self, request, *args, **kwargs):
-        if len(request.data["username"]) < 6 or len(request.data["password"]) < 4:
-            body = {"message": "short field"}
-            return Response(body, status=status.HTTP_400_BAD_REQUEST)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
@@ -50,3 +48,7 @@ class UserAPI(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+class ContactViewSet(viewsets.ModelViewSet):
+    queryset = Contact.objects.all()
+    serializer_class = ContactSerializer
