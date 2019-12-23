@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from .models import Contact
+from .models import Contact, TodayList
 
 # 회원가입 시리얼라이저
 class CreateUserSerializer(serializers.ModelSerializer):
@@ -39,3 +39,8 @@ class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
         fields = ('id','name','info','time', 'content', 'created_at')
+
+class TodayListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TodayList
+        fields = ('id', 'image', 'created_at')
