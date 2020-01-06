@@ -36,7 +36,6 @@ class LoginUserSerializer(serializers.Serializer):
         raise serializers.ValidationError("Unable to log in with provided credentials.")
 
 class ContactSerializer(serializers.ModelSerializer):
-    time = fields.DateField(input_formats=['%Y-%m-%d'])
     class Meta:
         model = Contact
         fields = ('id','name','info','time', 'content', 'created_at')
