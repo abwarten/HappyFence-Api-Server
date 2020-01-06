@@ -13,19 +13,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import json
 
-# in settings.py
-with open("./secrets.json") as f:
-    secrets = json.loads(f.read())
-
-
-# Keep secret keys in secrets.json
-def get_secret(setting, secrets=secrets):
-    try:
-        return secrets[setting]
-    except KeyError:
-        error_msg = "Set the {0} environment variable".format(setting)
-        raise ImproperlyConfigured(error_msg)
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -34,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_secret("SECRET_KEY")
+SECRET_KEY = "aywhr9324200@"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -95,15 +82,8 @@ WSGI_APPLICATION = 'happyfence_api_server.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': get_secret("DATABASE_NAME"),
-        'USER': get_secret("DATABASE_USER"),
-        'PASSWORD': get_secret("DATABASE_PASSWORD"),
-        'HOST': get_secret("DATABASE_HOST"),
-        'PORT': get_secret("DATABASE_PORT"),
-        'OPTIONS': {
-            'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 

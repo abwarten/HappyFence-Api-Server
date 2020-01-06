@@ -5,9 +5,10 @@ from .serializers import (
     UserSerializer,
     LoginUserSerializer,
     ContactSerializer,
-    TodayListSerializer
+    TodayListSerializer,
+    TableListSerializer,
 )
-from .models import Contact, TodayList
+from .models import Contact, TodayList, TableList
 
 #json response, response
 from django.http import JsonResponse
@@ -56,19 +57,20 @@ class LoginAPI(generics.GenericAPIView):
 
 
 class UserAPI(generics.RetrieveAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserSerializer
 
     def get_object(self):
         return self.request.user
 
 class ContactViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
 
 class TodayListAPI(generics.GenericAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = TodayListSerializer
     parser_classes = (MultiPartParser, FormParser)
 
     def get(self, request):
@@ -101,3 +103,8 @@ class TodayListAPI(generics.GenericAPIView):
             return Response(arr, status=status.HTTP_201_CREATED)
         else:
             return Response(arr, status=status.HTTP_400_BAD_REQUEST)
+
+class TableViewSet(viewsets.ModelViewSet):
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    queryset = TableList.objects.all()
+    serializer_class = TableListSerializer

@@ -1,10 +1,18 @@
 from django.urls import path, include
-from .views import RegistrationAPI, LoginAPI, UserAPI, TodayListAPI, ContactViewSet
+from .views import (
+    RegistrationAPI, 
+    LoginAPI, 
+    UserAPI, 
+    TodayListAPI, 
+    ContactViewSet,
+    TableViewSet,
+)
 
 from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register('contact', ContactViewSet)
+router.register('table', TableViewSet)
 
 urlpatterns = [
     path("auth/register/", RegistrationAPI.as_view()),

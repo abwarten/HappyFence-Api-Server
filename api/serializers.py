@@ -1,7 +1,7 @@
-from rest_framework import serializers
+from rest_framework import serializers, fields
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from .models import Contact, TodayList
+from .models import Contact, TodayList, TableList, TableItem
 
 # 회원가입 시리얼라이저
 class CreateUserSerializer(serializers.ModelSerializer):
@@ -36,6 +36,7 @@ class LoginUserSerializer(serializers.Serializer):
         raise serializers.ValidationError("Unable to log in with provided credentials.")
 
 class ContactSerializer(serializers.ModelSerializer):
+    time = fields.DateField(input_formats=['%Y-%m-%d'])
     class Meta:
         model = Contact
         fields = ('id','name','info','time', 'content', 'created_at')
@@ -44,3 +45,17 @@ class TodayListSerializer(serializers.ModelSerializer):
     class Meta:
         model = TodayList
         fields = ('id', 'image', 'created_at')
+
+class TableItemSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+    content = serializers.CharField()
+
+    class Meta:
+        model = TableItem
+        fields = '__all__'
+
+class TableListSerializer(serializers.ModelSerializer):
+    contents = TableItemSerializer(many=True)
+    class Meta:
+        model = TableList
+        fields = '__all__'
